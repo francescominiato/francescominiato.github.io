@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Francesco Miniato — autore di "Mi fido, anzi no"</title>
+  <meta name="description" content="Sito ufficiale di Francesco Miniato, autore del libro &quot;Mi fido, anzi no&quot;.">
+  <meta name="author" content="Francesco Miniato">
+  <link rel="icon" type="image/png" href="logoFM.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Checkbox nascosti: pilotano menu e tema in puro CSS (:has) -->
+  <input type="checkbox" id="nav-toggle" class="sr-only" aria-hidden="true">
+  <input type="checkbox" id="theme-toggle" class="sr-only" aria-hidden="true">
+
+  <header class="navbar">
+    <a class="brand" href="#" aria-label="Francesco Miniato — home">
+      <img src="logoFM.png" alt="Logo di Francesco Miniato" width="48" height="45">
+      <span class="brand-name">Francesco Miniato</span>
+    </a>
+
+    <!-- Hamburger: visibile solo su mobile -->
+    <label for="nav-toggle" class="hamburger" aria-label="Apri o chiudi il menu">
+      <span></span><span></span><span></span>
+    </label>
+
+    <nav class="nav-links" aria-label="Navigazione principale">
+      <a href="#">blog</a>
+      <a href="#">git</a>
+      <a href="#">contact</a>
+      <!-- Selettore tema luna/sole -->
+      <label for="theme-toggle" class="theme-switch" title="Cambia tema chiaro/scuro" aria-label="Cambia tema chiaro o scuro">
+        <span class="icon-sun" aria-hidden="true">☀</span>
+        <span class="icon-moon" aria-hidden="true">☾</span>
+      </label>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 class="greeting" aria-label="Ciao!">
+      <span>Ciao!</span>
+      <span>Hey there!</span>
+      <span>¡Hola!</span>
+      <span>Salut!</span>
+      <span>Hallo!</span>
+      <span>Olá!</span>
+      <span>Hej!</span>
+      <span>こんにちは</span>
+    </h1>
+
+    <section class="bio">
+      <p>Sono Francesco Miniato. Insegno informatica in un istituto superiore dell'Emilia-Romagna, dove passo le giornate a ripetere agli studenti la stessa cosa che ripeto a me stesso: non fidarsi mai di ciò che sembra ovvio.</p>
+
+      <p>Sulla quarantina, sposato e padre di due figli, sono curioso per mestiere e per vizio. Amo viaggiare e immergermi in mari dai fondali interessanti, convinto che — sott'acqua come nella vita — le cose che contano stiano sempre sotto la superficie.</p>
+
+      <p>Poco social per natura, preferisco un buon libro vista mare o una birretta in compagnia.</p>
+
+      <p><em>«Mi fido, anzi no»</em> è il mio primo libro. Lo trovi su Amazon in versione <a href="https://www.amazon.it/dp/B0H6883VXR" target="_blank" rel="noopener">cartacea</a> o <a href="https://www.amazon.it/dp/B0H68DQ4D7" target="_blank" rel="noopener">eBook</a>. Spero ti faccia venire qualche dubbio in più.</p>
+    </section>
+
+    <section class="book" aria-label="Il libro">
+      <a class="book-link" href="https://www.amazon.it/dp/B0H6883VXR"
+         target="_blank" rel="noopener"
+         aria-label="Acquista «Mi fido, anzi no» su Amazon">
+        <img class="book-cover" src="cover.png"
+             alt="Copertina del libro «Mi fido, anzi no» di Francesco Miniato"
+             width="555" height="800">
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>«Mi fido, anzi no» · © <span>2026</span> Francesco Miniato</p>
+  </footer>
+
+</body>
+</html>

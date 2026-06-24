@@ -1,0 +1,369 @@
+/* ===========================================================
+   Francesco Miniato — sito autore
+   Solo HTML + CSS, niente JS.
+   Tema chiaro (crema) di default, scuro (blu) via toggle.
+   =========================================================== */
+
+/* ---------- Variabili tema ---------- */
+:root {
+  --bg: #f6efe0;          /* crema */
+  --bg-soft: #efe6d2;
+  --surface: #fbf6ec;
+  --text: #133047;        /* blu profondo */
+  --text-soft: #4a5d6b;
+  --accent: #e2553c;      /* corallo (dal libro) */
+  --accent-2: #2f8e8e;    /* teal (dal logo) */
+  --border: rgba(19, 48, 71, 0.14);
+  --shadow: 0 6px 24px rgba(19, 48, 71, 0.10);
+
+  --maxw: 65ch;
+  --nav-h: 4rem;
+  --radius: 14px;
+}
+
+/* Fallback iniziale: rispetta la preferenza di sistema finché non si tocca il toggle */
+@media (prefers-color-scheme: dark) {
+  :root:not(:has(#theme-toggle)) { color-scheme: dark; }
+}
+
+/* Tema scuro applicato dal toggle (checkbox hack + :has) */
+:root:has(#theme-toggle:checked) {
+  --bg: #0f2a43;          /* blu, non nero */
+  --bg-soft: #0c233a;
+  --surface: #15314c;
+  --text: #f3ecda;        /* crema */
+  --text-soft: #b9c6d2;
+  --accent: #ff6b4f;
+  --accent-2: #4fb8b8;
+  --border: rgba(243, 236, 218, 0.16);
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+/* ---------- Reset leggero ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+a { color: inherit; }
+
+/* Checkbox di controllo: fuori vista ma accessibili da tastiera */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===========================================================
+   NAVBAR
+   =========================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--nav-h);
+  padding: 0.5rem 1.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.brand img {
+  display: block;
+  width: 48px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--text-soft);
+  padding: 0.25rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--accent);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after { transform: scaleX(1); }
+
+/* ---------- Selettore tema luna/sole ---------- */
+.theme-switch {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+/* Di default (chiaro) mostro la luna = "passa allo scuro"; nascondo il sole */
+.theme-switch .icon-sun { display: none; }
+.theme-switch .icon-moon { display: inline; }
+
+/* In tema scuro mostro il sole = "torna al chiaro" */
+:root:has(#theme-toggle:checked) .theme-switch .icon-sun { display: inline; }
+:root:has(#theme-toggle:checked) .theme-switch .icon-moon { display: none; }
+
+/* ---------- Hamburger ---------- */
+.hamburger {
+  display: none;            /* nascosto su desktop */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.6rem;
+  height: 2.6rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.hamburger span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ===========================================================
+   CONTENUTO
+   =========================================================== */
+.content {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 8vw, 6rem) 1.5rem 3rem;
+}
+
+/* ---------- Saluto animato (ciclo no-JS) ---------- */
+.greeting {
+  position: relative;
+  min-height: 1.2em;
+  margin: 0 0 2.5rem;
+  font-size: clamp(2.6rem, 9vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+
+.greeting span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  white-space: nowrap;
+  animation: greet 24s infinite;
+}
+
+/* 8 saluti × 3s ciascuno = 24s, delay scaglionato */
+.greeting span:nth-child(1) { animation-delay: 0s; }
+.greeting span:nth-child(2) { animation-delay: 3s; }
+.greeting span:nth-child(3) { animation-delay: 6s; }
+.greeting span:nth-child(4) { animation-delay: 9s; }
+.greeting span:nth-child(5) { animation-delay: 12s; }
+.greeting span:nth-child(6) { animation-delay: 15s; }
+.greeting span:nth-child(7) { animation-delay: 18s; }
+.greeting span:nth-child(8) { animation-delay: 21s; }
+
+@keyframes greet {
+  0%    { opacity: 0; transform: translateY(10px); }
+  2.5%  { opacity: 1; transform: translateY(0); }
+  10%   { opacity: 1; transform: translateY(0); }
+  12.5% { opacity: 0; transform: translateY(-10px); }
+  100%  { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ---------- Bio ---------- */
+.bio p {
+  margin: 0 0 1.2rem;
+  font-size: 1.12rem;
+  color: var(--text);
+}
+
+.bio em { color: var(--accent-2); font-style: italic; font-weight: 700; }
+
+/* Link nel testo: corallo + sottolineatura → inequivocabilmente cliccabili,
+   distinti dal titolo in corsivo teal (che è solo enfasi, non un link) */
+.bio a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.bio a:hover,
+.bio a:focus-visible { color: var(--accent-2); }
+
+/* ---------- Copertina libro ---------- */
+.book {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.book-cover {
+  display: inline-block;
+  width: min(280px, 70%);
+  height: auto;
+  border-radius: 6px;
+  /* Ombra marcata: stacca la copertina dallo sfondo crema */
+  box-shadow: 0 18px 40px rgba(19, 48, 71, 0.28),
+              0 4px 12px rgba(19, 48, 71, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-cover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 56px rgba(19, 48, 71, 0.36),
+              0 8px 18px rgba(19, 48, 71, 0.24);
+}
+
+/* Nel tema scuro l'ombra blu sparirebbe: la rendo morbida e scura */
+:root:has(#theme-toggle:checked) .book-cover {
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+}
+
+:root:has(#theme-toggle:checked) .book-cover:hover {
+  box-shadow: 0 26px 56px rgba(0, 0, 0, 0.6);
+}
+
+/* ===========================================================
+   FOOTER
+   =========================================================== */
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.site-footer p { margin: 0; }
+
+/* ===========================================================
+   MOBILE (hamburger)
+   =========================================================== */
+@media (max-width: 720px) {
+  .hamburger { display: flex; }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 1rem 1.5rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+
+    /* chiuso di default */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+  }
+
+  /* aperto quando il checkbox del menu è attivo */
+  .navbar:has(#nav-toggle:checked) .nav-links,
+  body:has(#nav-toggle:checked) .nav-links {
+    max-height: 22rem;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-links a { padding: 0.5rem 0; font-size: 1.05rem; }
+
+  .theme-switch { margin-top: 0.5rem; }
+
+  /* hamburger -> X quando aperto */
+  body:has(#nav-toggle:checked) .hamburger span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  body:has(#nav-toggle:checked) .hamburger span:nth-child(2) { opacity: 0; }
+  body:has(#nav-toggle:checked) .hamburger span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+  .brand-name { font-size: 0.95rem; }
+}
+
+/* ===========================================================
+   ACCESSIBILITÀ
+   =========================================================== */
+:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+
+  .greeting span { animation: none; }
+  .greeting span:nth-child(1) { opacity: 1; position: relative; } /* mostra un solo saluto */
+}
