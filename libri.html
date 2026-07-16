@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libri — Francesco Miniato</title>
+  <meta name="description" content="I libri di Francesco Miniato: «todo.md» e «Mi fido, anzi no».">
+  <meta name="author" content="Francesco Miniato">
+  <link rel="icon" type="image/png" href="logoFM.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Checkbox nascosti: pilotano menu e tema in puro CSS (:has) -->
+  <input type="checkbox" id="nav-toggle" class="sr-only" aria-hidden="true">
+  <input type="checkbox" id="theme-toggle" class="sr-only" aria-hidden="true">
+
+  <header class="navbar">
+    <a class="brand" href="index.html" aria-label="Francesco Miniato — home">
+      <img src="logoFM.png" alt="Logo di Francesco Miniato" width="48" height="45">
+      <span class="brand-name">Francesco Miniato</span>
+    </a>
+
+    <!-- Hamburger: visibile solo su mobile -->
+    <label for="nav-toggle" class="hamburger" aria-label="Apri o chiudi il menu">
+      <span></span><span></span><span></span>
+    </label>
+
+    <nav class="nav-links" aria-label="Navigazione principale">
+      <a href="libri.html" aria-current="page">libri</a>
+      <a href="https://github.com/francescominiato">git</a>
+      <a href="mailto:francesco.miniato@tutamail.com">contatto</a>
+      <!-- Selettore tema luna/sole -->
+      <label for="theme-toggle" class="theme-switch" title="Cambia tema chiaro/scuro" aria-label="Cambia tema chiaro o scuro">
+        <span class="icon-sun" aria-hidden="true">☀</span>
+        <span class="icon-moon" aria-hidden="true">☾</span>
+      </label>
+    </nav>
+  </header>
+
+  <main class="content">
+    <h1 class="greeting greeting--static">Libri</h1>
+
+    <!-- Libro 1: todo.md -->
+    <section class="bio">
+      <p><em>todo.md</em>: Storia della lingua invisibile in cui gli uomini scrivono e le macchine ricordano. Lo trovi su Amazon in versione <a href="https://www.amazon.it/dp/B0H94H4QXG" target="_blank" rel="noopener">cartacea</a>.</p>
+    </section>
+
+    <section class="book" aria-label="Il libro «todo.md»">
+      <a class="book-link" href="https://www.amazon.it/dp/B0H94H4QXG"
+         target="_blank" rel="noopener"
+         aria-label="Acquista «todo.md» su Amazon">
+        <img class="book-cover" src="cover-todo-md.png"
+             alt="Copertina del libro «todo.md» di Francesco Miniato"
+             width="500" height="800">
+      </a>
+    </section>
+
+    <hr class="book-sep" aria-hidden="true">
+
+    <!-- Libro 2: Mi fido, anzi no -->
+    <section class="bio">
+      <p><em>«Mi fido, anzi no»</em>: lo trovi su Amazon in versione <a href="https://www.amazon.it/dp/B0H6883VXR" target="_blank" rel="noopener">cartacea</a> o <a href="https://www.amazon.it/dp/B0H68DQ4D7" target="_blank" rel="noopener">eBook</a>. Spero ti faccia venire qualche dubbio in più.</p>
+    </section>
+
+    <section class="book" aria-label="Il libro «Mi fido, anzi no»">
+      <a class="book-link" href="https://www.amazon.it/dp/B0H6883VXR"
+         target="_blank" rel="noopener"
+         aria-label="Acquista «Mi fido, anzi no» su Amazon">
+        <img class="book-cover" src="cover.png"
+             alt="Copertina del libro «Mi fido, anzi no» di Francesco Miniato"
+             width="555" height="800">
+      </a>
+      <p class="book-note">Chi vuole verificare gli strumenti del laboratorio descritti nel libro li trova <a href="https://github.com/francescominiato/lab-mi-fido-anzi-no">qui, su GitHub</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span>2026</span> Francesco Miniato</p>
+  </footer>
+
+</body>
+</html>
