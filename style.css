@@ -242,27 +242,24 @@ a { color: inherit; }
 }
 
 /* ---------- Separatore tra i libri ---------- */
+/* La linea ha un "buco" trasparente al centro (niente patch opaca dietro la
+   stella): così non interferisce con l'ombra della cover in hover. */
 .book-sep {
   border: 0;
   height: 1px;
   width: min(280px, 70%);
   margin: 3.5rem auto;
-  background: linear-gradient(to right, transparent, var(--border), transparent);
+  background: linear-gradient(to right,
+    transparent 0,
+    var(--border) 22%,
+    var(--border) calc(50% - 1.3rem),
+    transparent calc(50% - 1.3rem),
+    transparent calc(50% + 1.3rem),
+    var(--border) calc(50% + 1.3rem),
+    var(--border) 78%,
+    transparent 100%);
   position: relative;
   overflow: visible;
-}
-
-/* Patch che interrompe la linea dietro la stella marina */
-.book-sep::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 2.4rem;
-  height: 2rem;
-  background: var(--bg);
-  transition: background-color 0.35s ease;
 }
 
 /* Stella marina disegnata in SVG: eredita il colore-accento e cambia col tema */
