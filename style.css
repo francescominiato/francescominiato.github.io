@@ -1,43 +1,100 @@
 /* ===========================================================
    Francesco Miniato — sito autore
    Solo HTML + CSS, niente JS.
-   Tema chiaro (crema) di default, scuro (blu) via toggle.
+   Il tema segue la preferenza di sistema (crema/blu) su tutte le pagine;
+   il toggle luna/sole lo inverte per la pagina corrente.
    =========================================================== */
 
-/* ---------- Variabili tema ---------- */
+/* ---------- Variabili tema ----------
+   Due palette sorgente (crema, blu), definite una volta sola.
+   Il tema attivo è lo XOR tra preferenza di sistema e toggle:
+     OS chiaro + toggle off -> crema
+     OS chiaro + toggle on  -> blu
+     OS scuro  + toggle off -> blu   (segue l'OS: coerente tra le pagine)
+     OS scuro  + toggle on  -> crema (override manuale, per la pagina corrente) */
 :root {
-  --bg: #f6efe0;          /* crema */
-  --bg-soft: #efe6d2;
-  --surface: #fbf6ec;
-  --text: #133047;        /* blu profondo */
-  --text-soft: #4a5d6b;
-  --accent: #e2553c;      /* corallo (dal libro) */
-  --accent-2: #2f8e8e;    /* teal (dal logo) */
-  --border: rgba(19, 48, 71, 0.14);
-  --shadow: 0 6px 24px rgba(19, 48, 71, 0.10);
+  /* palette crema */
+  --crema-bg: #f6efe0;
+  --crema-bg-soft: #efe6d2;
+  --crema-surface: #fbf6ec;
+  --crema-text: #133047;        /* blu profondo */
+  --crema-text-soft: #4a5d6b;
+  --crema-accent: #e2553c;      /* corallo (dal libro) */
+  --crema-accent-2: #2f8e8e;    /* teal (dal logo) */
+  --crema-border: rgba(19, 48, 71, 0.14);
+  --crema-shadow: 0 6px 24px rgba(19, 48, 71, 0.10);
 
+  /* palette blu */
+  --blu-bg: #0f2a43;            /* blu, non nero */
+  --blu-bg-soft: #0c233a;
+  --blu-surface: #15314c;
+  --blu-text: #f3ecda;          /* crema */
+  --blu-text-soft: #b9c6d2;
+  --blu-accent: #ff6b4f;
+  --blu-accent-2: #4fb8b8;
+  --blu-border: rgba(243, 236, 218, 0.16);
+  --blu-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+
+  /* misure */
   --maxw: 65ch;
   --nav-h: 4rem;
   --radius: 14px;
+
+  /* mappatura attiva: crema (default con OS chiaro) */
+  --bg: var(--crema-bg);
+  --bg-soft: var(--crema-bg-soft);
+  --surface: var(--crema-surface);
+  --text: var(--crema-text);
+  --text-soft: var(--crema-text-soft);
+  --accent: var(--crema-accent);
+  --accent-2: var(--crema-accent-2);
+  --border: var(--crema-border);
+  --shadow: var(--crema-shadow);
+  color-scheme: light;
 }
 
-/* Fallback iniziale: rispetta la preferenza di sistema finché non si tocca il toggle */
-@media (prefers-color-scheme: dark) {
-  :root:not(:has(#theme-toggle)) { color-scheme: dark; }
-}
-
-/* Tema scuro applicato dal toggle (checkbox hack + :has) */
+/* OS chiaro + toggle acceso -> blu */
 :root:has(#theme-toggle:checked) {
-  --bg: #0f2a43;          /* blu, non nero */
-  --bg-soft: #0c233a;
-  --surface: #15314c;
-  --text: #f3ecda;        /* crema */
-  --text-soft: #b9c6d2;
-  --accent: #ff6b4f;
-  --accent-2: #4fb8b8;
-  --border: rgba(243, 236, 218, 0.16);
-  --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  --bg: var(--blu-bg);
+  --bg-soft: var(--blu-bg-soft);
+  --surface: var(--blu-surface);
+  --text: var(--blu-text);
+  --text-soft: var(--blu-text-soft);
+  --accent: var(--blu-accent);
+  --accent-2: var(--blu-accent-2);
+  --border: var(--blu-border);
+  --shadow: var(--blu-shadow);
   color-scheme: dark;
+}
+
+/* OS scuro: il blu diventa il default (coerente su tutte le pagine)
+   e il toggle inverte verso il crema */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--blu-bg);
+    --bg-soft: var(--blu-bg-soft);
+    --surface: var(--blu-surface);
+    --text: var(--blu-text);
+    --text-soft: var(--blu-text-soft);
+    --accent: var(--blu-accent);
+    --accent-2: var(--blu-accent-2);
+    --border: var(--blu-border);
+    --shadow: var(--blu-shadow);
+    color-scheme: dark;
+  }
+
+  :root:has(#theme-toggle:checked) {
+    --bg: var(--crema-bg);
+    --bg-soft: var(--crema-bg-soft);
+    --surface: var(--crema-surface);
+    --text: var(--crema-text);
+    --text-soft: var(--crema-text-soft);
+    --accent: var(--crema-accent);
+    --accent-2: var(--crema-accent-2);
+    --border: var(--crema-border);
+    --shadow: var(--crema-shadow);
+    color-scheme: light;
+  }
 }
 
 /* ---------- Reset leggero ---------- */
@@ -158,13 +215,26 @@ a { color: inherit; }
   transition: background 0.2s ease;
 }
 
-/* Di default (chiaro) mostro la luna = "passa allo scuro"; nascondo il sole */
+/* L'icona segue il tema EFFETTIVO (stessa logica XOR di sistema + toggle):
+   luna quando è chiaro (= "passa allo scuro"), sole quando è scuro (= "torna al chiaro"). */
+
+/* OS chiaro + toggle off -> crema -> luna */
 .theme-switch .icon-sun { display: none; }
 .theme-switch .icon-moon { display: inline; }
 
-/* In tema scuro mostro il sole = "torna al chiaro" */
+/* OS chiaro + toggle on -> blu -> sole */
 :root:has(#theme-toggle:checked) .theme-switch .icon-sun { display: inline; }
 :root:has(#theme-toggle:checked) .theme-switch .icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  /* OS scuro + toggle off -> blu -> sole */
+  .theme-switch .icon-sun { display: inline; }
+  .theme-switch .icon-moon { display: none; }
+
+  /* OS scuro + toggle on -> crema -> luna */
+  :root:has(#theme-toggle:checked) .theme-switch .icon-sun { display: none; }
+  :root:has(#theme-toggle:checked) .theme-switch .icon-moon { display: inline; }
+}
 
 /* ---------- Hamburger ---------- */
 .hamburger {
