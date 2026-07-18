@@ -449,6 +449,14 @@ a { color: inherit; }
 
 .site-footer p { margin: 0; }
 
+.footer-note {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.footer-note .heart { color: var(--accent); }
+
 /* ===========================================================
    MOBILE (hamburger)
    =========================================================== */
